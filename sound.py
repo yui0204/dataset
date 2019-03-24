@@ -1145,7 +1145,7 @@ class Multiwave:
         plt.ylabel("Sound pressure [Pa]")
         plt.show()
         
-    def stft_plot(self, N = 2048, cmin = -100, cmax = -80):
+    def stft_plot(self, N = 512, cmin = -100, cmax = -30):
         """このメソッドはSTFTカラーマップをグラフ表示のみ行います)
         
         :param N: STFTフレームサイズ（通常2048）
@@ -1167,7 +1167,7 @@ class Multiwave:
         plt.xlabel("Time [s]")
         plt.ylabel("Frequency[Hz]")
         plt.show()
-        
+        """
         # STFT結果を時間平均し、FFTグラフを表示
         plt.figure(figsize=(15, 4))
         for n in range(self.__nchan):
@@ -1180,7 +1180,7 @@ class Multiwave:
         plt.ylim(cmin - 20 ,cmax + 20)
         plt.grid(True)
         plt.show()
-        
+        """
         
     def fft(self, N = 2048, bins = 1024):
         """このメソッドは平均のFFTを算出し、特徴量データフレームに出力します
@@ -1668,12 +1668,12 @@ class Multiwave:
         return ica.transform(data).T
     
     
-    def write_wav_sf(self, filepath = None, filename = "write.wav"):
+    def write_wav_sf(self, dir=None, filename=None, bit=16):
         """このメソッドは時系列データを24bitwavファイルに書き出すためのメソッドです"""
         
         import soundfile as sf
 
-        sf.write(filepath + filename, np.array(self.__norm_sound).T, self.__fs, 
+        sf.write(dir + filename, np.array(self.__norm_sound).T, self.__fs, 
                  subtype="PCM_24")
         
         
