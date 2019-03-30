@@ -67,10 +67,10 @@ for image_size in [256]:
     for mode in ["train", "val"]:
         if mode == "train":
             dry_dir = os.getcwd() + "/elements/"
-            totalnum = 1000
+            totalnum = 1
         else:
             dry_dir = os.getcwd() + "/elements_val/"
-            totalnum = 1
+            totalnum = 0
         for datanum in range(0,totalnum):
             print("\n\n\nNo.", datanum)   
             name = ""
@@ -194,7 +194,7 @@ for image_size in [256]:
                             #break                   
                 else:
                     continue
-            for noise_db in [-30, -20, -10, 0]:
+            for noise_db in [-30]:
                 noise_segdata_dir = os.getcwd()+"/multi_segdata76_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
                 segdata_dir = os.getcwd()+"/multi_segdata75_"+str(image_size)+"_no_sound/"+mode+"/"
         #        noise_segdata_dir = os.getcwd()+"/"+dirname+"10_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
@@ -247,7 +247,7 @@ for image_size in [256]:
                     wavelist[i].write_wav_sf(dir=noise_save_dir, filename=namelist2[i] + ".wav", bit=16)
                     if noise_db == -30:
                         wavelist[i].write_wav_sf(dir=save_dir, filename=namelist2[i] + ".wav", bit=16)
-                        with open(noise_save_dir+'sound_direction.txt', 'w') as f:
+                        with open(save_dir+'sound_direction.txt', 'w') as f:
                             f.write(text)
                 bgm.write_wav_sf(dir=noise_save_dir, filename="BGM.wav", bit=16)
                 noise_syn_wave.write_wav_sf(dir=noise_save_dir, filename="0_" + name + ".wav", bit=16)
