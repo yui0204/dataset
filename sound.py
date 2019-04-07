@@ -266,7 +266,7 @@ class Wavedata:
         plt.figure(figsize=(12,3))
         plt.plot(self.__time, self.__norm_sound)
         plt.title(self.__name)
-        #plt.ylim(ymin, ymax)
+        plt.ylim(ymin, ymax)
         plt.xlabel("Time [s]")
         plt.ylabel("Sound pressure [Pa]")
         plt.show()

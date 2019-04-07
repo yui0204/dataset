@@ -54,7 +54,7 @@ def multi_conv(sig_wavedata, ir_multiwave):
         conv = Wavedata(16000, con, sig_wavedata.name, sig_wavedata.nbyte)
         wavedata_list.append(conv)
 
-    return Multiwave(wavedata_list)
+    return wavedata_list[0], Multiwave(wavedata_list)
     
        
 #dirname = "SMALL_STUFF"
@@ -67,7 +67,7 @@ for image_size in [256]:
     for mode in ["train", "val"]:
         if mode == "train":
             dry_dir = os.getcwd() + "/elements/"
-            totalnum = 1
+            totalnum = 100
         else:
             dry_dir = os.getcwd() + "/elements_val/"
             totalnum = 0
@@ -158,16 +158,33 @@ for image_size in [256]:
                         ### wave conv
                         ir_dir = "./impulse_response/"
                         deg = random.randrange(8) * 45
-                        ir_multi = WavfileOperate(ir_dir+"impulse_"+str(deg)+"deg.wav").multiwave
+                        ir_multi = WavfileOperate(ir_dir+"impulse_"+str(deg)+"deg.wav", logger=0.5).multiwave
                         print(ir_multi.name)
-                        multiwave = multi_conv(wave, ir_multi)
+                        wave.plot()
+                        wave, multiwave = multi_conv(wave, ir_multi)
+                        wave.plot()
+                        for nchan in range(8):
+                            if multiwave.norm_sound[nchan].max() > 1.0:
+#                                multiwave.plot()
+                                print("clipping!!!!!!!!!!!!!!!!!!!")
+                                print(multiwave.norm_sound[nchan].max())
+                            
                         if not len(multiwave.norm_sound[0]) == total_length:
                             print("Size error!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         
         
                         text = text + dir2 + "_" + str(deg) + "deg\n"
                         
-                        if len(wavelist) > 0:
+                        
+                            
+                        if len(wavelist) == 0:
+                            wavelist.append(wave)
+                            name = name + "_" + dir2
+                            namelist2.append(dir2)
+                            syn_wave = wave
+                            multi_syn_wave = multiwave
+                            
+                        elif len(wavelist) > 0:
                             for j in range(len(namelist2)):
                                 if dir2 == namelist2[j]:
                                     wavelist[j] = wavelist[j].synthesis(wave, synthesis_name=dir2)
@@ -178,17 +195,11 @@ for image_size in [256]:
                                 name = name + " " + dir2
                                 namelist2.append(dir2)
                             same = False
-                            
-                        elif len(wavelist) == 0:
-                            wavelist.append(wave)
-                            name = name + "_" + dir2
-                            namelist2.append(dir2)
-                            syn_wave = wave
-                            multi_syn_wave = multiwave
 
-                        syn_wave = syn_wave.synthesis(wave, synthesis_name = name)
-                        multi_syn_wave = multi_syn_wave.synthesis(multiwave, synthesis_name = name)
-                    
+                            syn_wave = syn_wave.synthesis(wave, synthesis_name = name)
+                            multi_syn_wave = multi_syn_wave.synthesis(multiwave, synthesis_name = name)
+       
+                 
                         if idx >= total_length:
                             idx = 0
                             #break                   
@@ -227,12 +238,13 @@ for image_size in [256]:
                 
                 #noise_syn_wave.plot()
                 #bgm.stft_plot()
-                if noise_db == -30:
-                    syn_wave.stft_plot()
-                noise_syn_wave.stft_plot()
-                multi_syn_wave.stft_plot()
                 
+                #if noise_db == -30:
+                #    syn_wave.stft_plot()
+                #noise_syn_wave.stft_plot()
+                #multi_syn_wave.stft_plot()
                 
+                """
                 # Mixデータのフォルダ作成
                 noise_save_dir = noise_segdata_dir + str(datanum) + "/"  
                 if not os.path.exists(noise_save_dir):
@@ -249,6 +261,7 @@ for image_size in [256]:
                         wavelist[i].write_wav_sf(dir=save_dir, filename=namelist2[i] + ".wav", bit=16)
                         with open(save_dir+'sound_direction.txt', 'w') as f:
                             f.write(text)
+                
                 bgm.write_wav_sf(dir=noise_save_dir, filename="BGM.wav", bit=16)
                 noise_syn_wave.write_wav_sf(dir=noise_save_dir, filename="0_" + name + ".wav", bit=16)
 
@@ -262,4 +275,4 @@ for image_size in [256]:
                     
                 with open(noise_save_dir+'sound_direction.txt', 'w') as f:
                     f.write(text)
-   
+                """

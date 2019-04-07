@@ -110,7 +110,13 @@ for image_size in [256]:
                             if not len(wave.norm_sound) == total_length:
                                 print("Size error!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         
-                        if len(wavelist) > 0:
+                            
+                        if len(wavelist) == 0:
+                            wavelist.append(wave)
+                            name = name + "_" + dir2
+                            namelist2.append(dir2)
+                            syn_wave = wave
+                        elif len(wavelist) > 0:
                             for j in range(len(namelist2)):
                                 if dir2 == namelist2[j]:
                                     wavelist[j] = wavelist[j].synthesis(wave, synthesis_name=dir2)
@@ -121,14 +127,7 @@ for image_size in [256]:
                                 name = name + " " + dir2
                                 namelist2.append(dir2)
                             same = False
-                            
-                        elif len(wavelist) == 0:
-                            wavelist.append(wave)
-                            name = name + "_" + dir2
-                            namelist2.append(dir2)
-                            syn_wave = wave
-                        
-                        syn_wave = syn_wave.synthesis(wave, synthesis_name = name)
+                            syn_wave = syn_wave.synthesis(wave, synthesis_name = name)
                     
                         if idx >= total_length:
                             idx = 0
