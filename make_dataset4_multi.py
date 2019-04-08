@@ -18,24 +18,29 @@ import shutil
 import scipy
 
 
-def sampling_reverb(signal_array, impulse_response):
+def sampling_reverb(signal_array, impulse_response, tf):
     
     sigL = len(signal_array)
-    irL = len(impulse_response)
+    #irL = len(impulse_response)
     
-    new_irL = int((2 ** np.ceil(np.log2(abs(irL)))) * 2)
+    #new_irL = int((2 ** np.ceil(np.log2(abs(irL)))) * 2)
+    new_irL = 512
     frameL = new_irL // 2
-    new_IR = np.zeros(new_irL, dtype=np.float64)
-    new_IR[:irL] = impulse_response
+    #new_IR = np.zeros(new_irL, dtype=np.float64)
+    #new_IR[:irL] = impulse_response
     
-    frame_num = int(np.ceil((sigL + frameL) / np.float(frameL)))
+    #frame_num = int(np.ceil((sigL + frameL) / np.float(frameL)))
+    frame_num = 257
     new_sigL = frameL * frame_num
     new_sig = np.zeros(new_sigL, dtype = np.float64)
-    new_sig[frameL : frameL + sigL] = signal_array
+    #new_sig[frameL : frameL + sigL] = signal_array
+    new_sig = signal_array
     
-    ret = np.zeros(new_sigL - frame_num, dtype = np.float64)
+    #ret = np.zeros(new_sigL - frame_num, dtype = np.float64)
+    ret = np.zeros(new_sigL, dtype = np.float64)
 
-    ir_fft = scipy.fftpack.fft(new_IR) # impulse responce FFT
+    #ir_fft = scipy.fftpack.fft(new_IR) # impulse responce FFT
+    ir_fft = tf * 0.65
     for ii in range(frame_num - 1):
         s_ind = frameL * ii
         e_ind = frameL * (ii + 2)
@@ -47,10 +52,10 @@ def sampling_reverb(signal_array, impulse_response):
     return ret[:sigL]
 
 
-def multi_conv(sig_wavedata, ir_multiwave):    
+def multi_conv(sig_wavedata, ir_multiwave, tf):    
     wavedata_list = []
     for n in range(ir_multiwave.nchan):
-        con = sampling_reverb(sig_wavedata.norm_sound, ir_multiwave.norm_sound[n])
+        con = sampling_reverb(sig_wavedata.norm_sound, ir_multiwave.norm_sound[n], tf[n])
         conv = Wavedata(16000, con, sig_wavedata.name, sig_wavedata.nbyte)
         wavedata_list.append(conv)
 
@@ -154,18 +159,20 @@ for image_size in [256]:
                             if not len(wave.norm_sound) == total_length:
                                 print("Size error!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         
-        
+                        if wave.norm_sound.max() > 1.0:
+                                print("clipping!!!!!!!!!!!!!!!!!!!")
+                                print(wave.norm_sound.max())
                         ### wave conv
                         ir_dir = "./impulse_response/"
                         deg = random.randrange(8) * 45
-                        ir_multi = WavfileOperate(ir_dir+"impulse_"+str(deg)+"deg.wav", logger=0.5).multiwave
-                        print(ir_multi.name)
-                        wave.plot()
-                        wave, multiwave = multi_conv(wave, ir_multi)
-                        wave.plot()
+                        tf = np.load(ir_dir+"tf_" + str(deg) + "deg.npy")
+                        ir_multi = WavfileOperate(ir_dir+"impulse_"+str(deg)+"deg.wav", logger=1).multiwave
+                        #print(ir_multi.name)
+                        wave, multiwave = multi_conv(wave, ir_multi, tf)
+                        
                         for nchan in range(8):
                             if multiwave.norm_sound[nchan].max() > 1.0:
-#                                multiwave.plot()
+                                multiwave.plot()
                                 print("clipping!!!!!!!!!!!!!!!!!!!")
                                 print(multiwave.norm_sound[nchan].max())
                             
@@ -238,14 +245,13 @@ for image_size in [256]:
                 
                 #noise_syn_wave.plot()
                 #bgm.stft_plot()
-                
-                #if noise_db == -30:
-                #    syn_wave.stft_plot()
-                #noise_syn_wave.stft_plot()
-                #multi_syn_wave.stft_plot()
-                
                 """
-                # Mixデータのフォルダ作成
+                if noise_db == -30:
+                    syn_wave.stft_plot()
+                noise_syn_wave.stft_plot()
+                multi_syn_wave.stft_plot()
+                """
+                
                 noise_save_dir = noise_segdata_dir + str(datanum) + "/"  
                 if not os.path.exists(noise_save_dir):
                     os.makedirs(noise_save_dir)
@@ -254,8 +260,8 @@ for image_size in [256]:
                     os.makedirs(save_dir)
                 
                 for i in range(len(wavelist)):
-                    if noise_db == -30:
-                        wavelist[i].stft_plot()
+                    #if noise_db == -30:
+                    #    wavelist[i].stft_plot()
                     wavelist[i].write_wav_sf(dir=noise_save_dir, filename=namelist2[i] + ".wav", bit=16)
                     if noise_db == -30:
                         wavelist[i].write_wav_sf(dir=save_dir, filename=namelist2[i] + ".wav", bit=16)
@@ -275,4 +281,4 @@ for image_size in [256]:
                     
                 with open(noise_save_dir+'sound_direction.txt', 'w') as f:
                     f.write(text)
-                """
+                
