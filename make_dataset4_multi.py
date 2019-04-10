@@ -70,11 +70,10 @@ for image_size in [256]:
     total_length = image_size * 256 + 256
     n = 4
     for mode in ["train", "val"]:
+        dry_dir = os.getcwd() + "/elements/"+mode+"/"
         if mode == "train":
-            dry_dir = os.getcwd() + "/elements/"
-            totalnum = 100
+            totalnum = 10
         else:
-            dry_dir = os.getcwd() + "/elements_val/"
             totalnum = 0
         for datanum in range(0,totalnum):
             print("\n\n\nNo.", datanum)   
@@ -212,24 +211,26 @@ for image_size in [256]:
                             #break                   
                 else:
                     continue
-            for noise_db in [-30]:
-                noise_segdata_dir = os.getcwd()+"/multi_segdata76_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
-                segdata_dir = os.getcwd()+"/multi_segdata75_"+str(image_size)+"_no_sound/"+mode+"/"
+                
+                
+            for noise_db in [-30, -20, -10, 0]:
+                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata76_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
+                segdata_dir = os.getcwd()+"/datasets/multi_segdata75_"+str(image_size)+"_no_sound/"+mode+"/"
         #        noise_segdata_dir = os.getcwd()+"/"+dirname+"10_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
         #        segdata_dir = os.getcwd()+"/"+dirname+"9_"+str(image_size)+"/"+mode+"/"
 
                 
                 if datanum % 2 == 0:
-                    bgm = WavfileOperate(os.getcwd()+'/restaurant.wav').wavedata.vol(noise_db)  
+                    bgm = WavfileOperate(os.getcwd()+'/BGMs/restaurant.wav').wavedata.vol(noise_db)  
                 else:    
-                    bgm = WavfileOperate(os.getcwd()+'/hall.wav').wavedata.vol(noise_db)
+                    bgm = WavfileOperate(os.getcwd()+'/BGMs/hall.wav').wavedata.vol(noise_db)
                 nframe = len(bgm.norm_sound)
                 start_idx = random.randrange(nframe - 9 * bgm.fs)
                 cut_sound = bgm.norm_sound[start_idx:start_idx + total_length] 
                 bgm = Wavedata(bgm.fs, cut_sound, bgm.name, bgm.nbyte)
                 noise_syn_wave = syn_wave.synthesis(bgm, synthesis_name = name)
                     
-                no_sound = WavfileOperate(os.getcwd()+'/no_sound.wav').wavedata.vol(0)
+                no_sound = WavfileOperate(os.getcwd()+'/BGMs/no_sound.wav').wavedata.vol(0)
                 syn_wave = syn_wave.synthesis(no_sound, synthesis_name = name)
 
                 bgm_list = []
