@@ -216,8 +216,8 @@ for image_size in [256]:
             for noise_db in [-30, -20, -10, 0]:
                 noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata76_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
                 segdata_dir = os.getcwd()+"/datasets/multi_segdata75_"+str(image_size)+"_no_sound/"+mode+"/"
-        #        noise_segdata_dir = os.getcwd()+"/"+dirname+"10_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
-        #        segdata_dir = os.getcwd()+"/"+dirname+"9_"+str(image_size)+"/"+mode+"/"
+                #noise_segdata_dir = os.getcwd()+"/datasets/"+dirname+"_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
+                #segdata_dir = os.getcwd()+"/datasets/"+dirname+"_"+str(image_size)+"/"+mode+"/"
 
                 
                 if datanum % 2 == 0:
