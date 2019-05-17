@@ -88,9 +88,9 @@ for image_size in [256]:
                     dir2_list = os.listdir(cur_dir)
                     #dir2 = dir2_list[random.randrange(len(dir2_list))]            
                     if i == 0:                        
-                        dir2 = dir2_list[2]
+                        dir2 = dir2_list[2] # COUGH
                     elif i == 1 or i == 2:               
-                        dir2 = dir2_list[i * 2 + 1]
+                        dir2 = dir2_list[i * 2 + 1] # FART, THROAT
 
                     cur_dir = cur_dir + "/" + dir2 + "/"           
                     namelist.append(dir1+"_"+dir2)                
@@ -156,8 +156,8 @@ for image_size in [256]:
                                 print(wave.norm_sound.max())
                         ### wave conv
                         ir_dir = "./impulse_response/"
-                        #deg = random.randrange(8) * 45
-                        deg = i * 90
+                        deg = random.randrange(8) * 45
+                        #deg = i * 90
                         tf = np.load(ir_dir+"tf_" + str(deg) + "deg.npy")
                         ir_multi = WavfileOperate(ir_dir+"impulse_"+str(deg)+"deg.wav", logger=1).multiwave
                         #print(ir_multi.name)
@@ -208,8 +208,8 @@ for image_size in [256]:
                 
                 
             for noise_db in [-20]:
-                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
-                segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_no_sound/"+mode+"/"
+                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_"+ str(noise_db)+"dB_random/"+mode+"/"
+                segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_no_sound_random/"+mode+"/"
                 #noise_segdata_dir = os.getcwd()+"/datasets/"+dirname+"_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
                 #segdata_dir = os.getcwd()+"/datasets/"+dirname+"_"+str(image_size)+"/"+mode+"/"
 
