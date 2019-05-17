@@ -59,9 +59,9 @@ for image_size in [256]:
     for mode in ["train", "val"]:
         dry_dir = os.getcwd() + "/elements/"+mode+"/"
         if mode == "train":
-            totalnum = 1000
+            totalnum = 3000
         else:
-            totalnum = 100
+            totalnum = 1000
         for datanum in range(0, totalnum):
             print("\n\n\nNo.", datanum)   
             name = ""
@@ -88,9 +88,9 @@ for image_size in [256]:
                     dir2_list = os.listdir(cur_dir)
                     #dir2 = dir2_list[random.randrange(len(dir2_list))]            
                     if i == 0:                        
-                        dir2 = dir2_list[2] # COUGH
+                        dir2 = dir2_list[2]
                     elif i == 1 or i == 2:               
-                        dir2 = dir2_list[i * 2 + 1] # FART, THROAT
+                        dir2 = dir2_list[i * 2 + 1]
 
                     cur_dir = cur_dir + "/" + dir2 + "/"           
                     namelist.append(dir1+"_"+dir2)                
