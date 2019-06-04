@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 
 from sound import WavfileOperate, Wavedata, Multiwave
 import random
+from numpy.random import choice
 
 import shutil
 import scipy
@@ -59,10 +60,10 @@ for image_size in [256]:
     for mode in ["train", "val"]:
         dry_dir = os.getcwd() + "/elements/"+mode+"/"
         if mode == "train":
-            totalnum = 27000
+            totalnum = 10000
         else:
-            totalnum = 0
-        for datanum in range(3000, 3000+totalnum):
+            totalnum = 500
+        for datanum in range(0, totalnum):
             print("\n\n\nNo.", datanum)   
             name = ""
             namelist = []
@@ -86,11 +87,18 @@ for image_size in [256]:
                 cur_dir = dry_dir + dir1        
                 if os.path.isdir(cur_dir) == True:        
                     dir2_list = os.listdir(cur_dir)
+                    dir2_list.sort()
                     #dir2 = dir2_list[random.randrange(len(dir2_list))]            
                     if i == 0:
+                        deg_list = choice(8, 3, False)
+                        deg_list[0] = random.randrange(8)
+                        deg_list[1] = random.randrange(8)
+                        deg_list[2] = random.randrange(8)
+                        dir2 = dir2_list[0]
+                    elif i == 1:               
                         dir2 = dir2_list[2]
-                    elif i == 1 or i == 2:               
-                        dir2 = dir2_list[i * 2 + 1]
+                    elif i == 2:
+                        dir2 = dir2_list[4]
 
                     cur_dir = cur_dir + "/" + dir2 + "/"           
                     namelist.append(dir1+"_"+dir2)                
@@ -156,7 +164,9 @@ for image_size in [256]:
                                 print(wave.norm_sound.max())
                         ### wave conv
                         ir_dir = "./impulse_response/"
-                        deg = random.randrange(8) * 45
+                        
+                        deg = deg_list[i] * 45
+                        
                         #deg = i * 90
                         tf = np.load(ir_dir+"tf_" + str(deg) + "deg.npy")
                         ir_multi = WavfileOperate(ir_dir+"impulse_"+str(deg)+"deg.wav", logger=1).multiwave
@@ -208,8 +218,8 @@ for image_size in [256]:
                 
                 
             for noise_db in [-20]:
-                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_"+ str(noise_db)+"dB_random/"+mode+"/"
-                segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_no_sound_random/"+mode+"/"
+                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_"+ str(noise_db)+"dB_random_sep/"+mode+"/"
+                segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_no_sound_random_sep/"+mode+"/"
                 #noise_segdata_dir = os.getcwd()+"/datasets/"+dirname+"_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
                 #segdata_dir = os.getcwd()+"/datasets/"+dirname+"_"+str(image_size)+"/"+mode+"/"
 
