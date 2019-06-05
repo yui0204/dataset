@@ -91,9 +91,6 @@ for image_size in [256]:
                     #dir2 = dir2_list[random.randrange(len(dir2_list))]            
                     if i == 0:
                         deg_list = choice(8, 3, False)
-                        deg_list[0] = random.randrange(8)
-                        deg_list[1] = random.randrange(8)
-                        deg_list[2] = random.randrange(8)
                         dir2 = dir2_list[0]
                     elif i == 1:               
                         dir2 = dir2_list[2]
