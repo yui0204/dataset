@@ -56,7 +56,7 @@ overlap = 0.75
 
 for image_size in [256]:
     total_length = image_size * 256 + 256
-    n = 3
+    n = 1
     for mode in ["train", "val"]:
         dry_dir = os.getcwd() + "/elements/"+mode+"/"
         if mode == "train":
@@ -89,12 +89,17 @@ for image_size in [256]:
                     dir2_list = os.listdir(cur_dir)
                     dir2_list.sort()
                     #dir2 = dir2_list[random.randrange(len(dir2_list))]            
+                    
                     if i == 0:
-                        deg_list = choice(8, 3, False)
+                        #deg_list = choice(8, n, False)
+                        #dir2 = dir2_list[0]
+                        deg_list = choice(360, n, False)
+                        dir2 = dir2_list[random.randrange(8)]
+                    elif i == 3:
                         dir2 = dir2_list[0]
-                    elif i == 1:               
+                    elif i == 1 or i == 4:               
                         dir2 = dir2_list[2]
-                    elif i == 2:
+                    elif i == 2 or i == 5:
                         dir2 = dir2_list[4]
 
                     cur_dir = cur_dir + "/" + dir2 + "/"           
@@ -162,7 +167,7 @@ for image_size in [256]:
                         ### wave conv
                         ir_dir = "./impulse_response/"
                         
-                        deg = deg_list[i] * 45
+                        deg = deg_list[i] #* 45r
                         
                         #deg = i * 90
                         tf = np.load(ir_dir+"tf_" + str(deg) + "deg.npy")
@@ -215,11 +220,11 @@ for image_size in [256]:
                 
                 
             for noise_db in [-20]:
-                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_"+ str(noise_db)+"dB_random_sep/"+mode+"/"
-                segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_no_sound_random_sep/"+mode+"/"
-                #noise_segdata_dir = os.getcwd()+"/datasets/"+dirname+"_"+str(image_size)+"_"+ str(noise_db)+"dB/"+mode+"/"
-                #segdata_dir = os.getcwd()+"/datasets/"+dirname+"_"+str(image_size)+"/"+mode+"/"
-
+#                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_"+ str(noise_db)+"dB_random_sep/"+mode+"/"
+#                segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_no_sound_random_sep/"+mode+"/"
+                noise_segdata_dir = os.getcwd()+"/datasets/multi_localizedata1_"+str(image_size)+"_"+ str(noise_db)+"dB_random/"+mode+"/"
+                segdata_dir = os.getcwd()+"/datasets/multi_localizedata1_"+str(image_size)+"_no_sound_random/"+mode+"/"
+                
                 
                 if datanum % 2 == 0:
                     bgm = WavfileOperate(os.getcwd()+'/BGMs/restaurant.wav').wavedata.vol(noise_db)  
