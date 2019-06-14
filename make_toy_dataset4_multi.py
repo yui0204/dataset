@@ -166,7 +166,7 @@ for image_size in [256]:
                         ### wave conv
                         ir_dir = "./impulse_response/"
                         
-                        deg = deg_list[i] #* 45r
+                        deg = deg_list[i] * 45
                         
                         #deg = i * 90
                         tf = np.load(ir_dir+"tf_" + str(deg) + "deg.npy")
