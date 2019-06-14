@@ -91,10 +91,9 @@ for image_size in [256]:
                     #dir2 = dir2_list[random.randrange(len(dir2_list))]            
                     
                     if i == 0:
-                        #deg_list = choice(8, n, False)
-                        #dir2 = dir2_list[0]
-                        deg_list = choice(360, n, False)
-                        dir2 = dir2_list[random.randrange(8)]
+                        deg_list = choice(8, n, False)
+                        #deg_list = choice(360, n, False)
+                        dir2 = dir2_list[0]
                     elif i == 3:
                         dir2 = dir2_list[0]
                     elif i == 1 or i == 4:               
@@ -220,10 +219,10 @@ for image_size in [256]:
                 
                 
             for noise_db in [-20]:
-#                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_"+ str(noise_db)+"dB_random_sep/"+mode+"/"
-#                segdata_dir = os.getcwd()+"/datasets/multi_segdata3_"+str(image_size)+"_no_sound_random_sep/"+mode+"/"
-                noise_segdata_dir = os.getcwd()+"/datasets/multi_localizedata1_"+str(image_size)+"_"+ str(noise_db)+"dB_random/"+mode+"/"
-                segdata_dir = os.getcwd()+"/datasets/multi_localizedata1_"+str(image_size)+"_no_sound_random/"+mode+"/"
+                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata1_"+str(image_size)+"_"+ str(noise_db)+"dB_random/"+mode+"/"
+                segdata_dir = os.getcwd()+"/datasets/multi_segdata1_"+str(image_size)+"_no_sound_random/"+mode+"/"
+#                noise_segdata_dir = os.getcwd()+"/datasets/multi_localizedata1_"+str(image_size)+"_"+ str(noise_db)+"dB_random/"+mode+"/"
+#                segdata_dir = os.getcwd()+"/datasets/multi_localizedata1_"+str(image_size)+"_no_sound_random/"+mode+"/"
                 
                 
                 if datanum % 2 == 0:
