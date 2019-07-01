@@ -60,9 +60,9 @@ for image_size in [256]:
     for mode in ["train", "val"]:
         dry_dir = os.getcwd() + "/elements/"+mode+"/"
         if mode == "train":
-            totalnum = 10
+            totalnum = 5000
         else:
-            totalnum = 50
+            totalnum = 1000
         for datanum in range(0, totalnum):
             print("\n\n\nNo.", datanum)   
             name = ""
