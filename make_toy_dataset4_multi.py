@@ -62,7 +62,8 @@ for image_size in [256]:
         if mode == "train":
             totalnum = 10000
         else:
-            totalnum = 5000
+            totalnum = 1000
+
         for datanum in range(0, totalnum):
             print("\n\n\nNo.", datanum)   
             name = ""
