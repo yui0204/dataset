@@ -56,13 +56,14 @@ overlap = 0.75
 
 for image_size in [256]:
     total_length = image_size * 256 + 256
+    class_num = 3
     n = 3
     for mode in ["train", "val"]:
         dry_dir = os.getcwd() + "/elements/"+mode+"/"
         if mode == "train":
-            totalnum = 10000
+            totalnum = 10
         else:
-            totalnum = 1000
+            totalnum = 10
 
         for datanum in range(0, totalnum):
             print("\n\n\nNo.", datanum)   
@@ -82,7 +83,10 @@ for image_size in [256]:
                 dir1_list = os.listdir(dry_dir)
                 dir1 = dir1_list[random.randrange(len(dir1_list))]     
                 
-                #dir1 = "WHITE/"#"HUMAN/"
+                if not class_num == 75:
+                    dir1 = "HUMAN/"
+                elif class_num == 1:
+                    dir1 = "WHITE/"
                 
                 cur_dir = dry_dir + dir1        
                 if os.path.isdir(cur_dir) == True:        
@@ -90,18 +94,24 @@ for image_size in [256]:
                     dir2_list.sort()
                     dir2 = dir2_list[random.randrange(len(dir2_list))]            
                     
-                    if i == 0:
-                        deg_list = choice(8, n, False)
-                        #dir2 = dir2_list[0]
-                    #elif i == 3:
-                    #    dir2 = dir2_list[0]
-                    #elif i == 1 or i == 4:               
-                    #    dir2 = dir2_list[2 * 0]
-                    #elif i == 2 or i == 5:
-                    #    dir2 = dir2_list[4 * 0]
-
+                    if class_num == 75:
+                        if i == 0:
+                            deg_list = choice(8, n, False)
+                    elif class_num == 3:
+                        if i == 0:
+                            deg_list = choice(8, n, False)
+                            dir2 = dir2_list[0]
+                        elif i == 3:
+                            dir2 = dir2_list[0]
+                        elif i == 1 or i == 4:               
+                            dir2 = dir2_list[2]
+                        elif i == 2 or i == 5:
+                            dir2 = dir2_list[4]
+                    
+                    
                     cur_dir = cur_dir + "/" + dir2 + "/"
-                    #dir2 += str(i) for white noise 
+                    if class_num == 1:
+                        dir2 += str(i) #for white noise 
                     namelist.append(dir1+"_"+dir2)                
                     data_list = os.listdir(cur_dir)
         
@@ -219,8 +229,8 @@ for image_size in [256]:
                 
                 
             for noise_db in [-20]:
-                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata75_"+str(image_size)+"_"+ str(noise_db)+"dB_random_sep/"+mode+"/"
-                segdata_dir = os.getcwd()+"/datasets/multi_segdata75_"+str(image_size)+"_no_sound_random_sep/"+mode+"/"                
+                noise_segdata_dir = os.getcwd()+"/datasets/multi_segdata"+str(class_num)+"_"+str(image_size)+"_"+ str(noise_db)+"dB_random_sep/"+mode+"/"
+                segdata_dir = os.getcwd()+"/datasets/multi_segdata"+str(class_num)+"_"+str(image_size)+"_no_sound_random_sep/"+mode+"/"                
                 
                 if datanum % 2 == 0:
                     bgm = WavfileOperate(os.getcwd()+'/BGMs/restaurant.wav').wavedata.vol(noise_db)  
